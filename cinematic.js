@@ -1,0 +1,12 @@
+(() => {
+ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const sculptures=[...document.querySelectorAll('.sculpture')];let tx=0,ty=0,px=0,py=0;
+ addEventListener('pointermove',e=>{tx=e.clientX/innerWidth-.5;ty=e.clientY/innerHeight-.5;const glow=document.getElementById('cursor-glow');if(glow)glow.classList.toggle('big',!!e.target.closest('a,button,.glass,.memory-grid,.puzzle-wrap'));},{passive:true});
+ function frame(){px+=(tx-px)*.035;py+=(ty-py)*.035;if(!reduce)sculptures.forEach((el,i)=>{const k=(i%3+1)*5;el.style.translate=(px*k)+'px '+(py*k)+'px';});requestAnimationFrame(frame)}
+ if(!reduce)requestAnimationFrame(frame);
+ const chapters=[...document.querySelectorAll('.chapter')];
+ if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('chapter-active');entry.target.querySelectorAll('.eyebrow,.reveal,.story-beat,.memory-grid,.question').forEach((el,i)=>{if(!reduce)el.animate([{opacity:0,transform:'translate3d(0,28px,0) scale(.985)',filter:'blur(7px)'},{opacity:1,transform:'translate3d(0,0,0) scale(1)',filter:'blur(0)'}],{duration:850,delay:Math.min(i*90,540),easing:'cubic-bezier(.16,1,.3,1)',fill:'both'})})}}),{threshold:.22});chapters.forEach(c=>observer.observe(c))}
+ document.querySelectorAll('.mem-face,.puzzle-wrap,.story-beat,.glass').forEach(card=>{card.addEventListener('pointermove',e=>{if(reduce||innerWidth<720)return;const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform='perspective(900px) rotateX('+(-y*5)+'deg) rotateY('+(x*6)+'deg) translateZ(4px)'});card.addEventListener('pointerleave',()=>card.style.transform='')});
+ const trail=document.getElementById('love-trail');addEventListener('pointerdown',e=>{if(reduce||!trail)return;for(let i=0;i<3;i++){const h=document.createElement('span');h.className='trail-heart';h.textContent=['♡','✦','♥'][Math.floor(Math.random()*3)];h.style.left=(e.clientX+(Math.random()-.5)*34)+'px';h.style.top=(e.clientY+(Math.random()-.5)*28)+'px';h.style.setProperty('--dx',((Math.random()-.5)*90)+'px');trail.appendChild(h);setTimeout(()=>h.remove(),1400)}});
+ const title=document.querySelector('#intro-h1');if(title)title.classList.add('text-shimmer');
+})();
