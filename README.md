@@ -5,7 +5,7 @@ A cinematic, interactive love-letter experience built with static HTML, CSS, Jav
 ## Project files
 - `index.html`: story structure, star puzzle, memory cards, finale and WebGL background.
 - `cinematic.css`: visual system, glass surfaces, floating 3D-style sculptures and responsive motion styling.
-- `cinematic.js`: staggered text entrance, scroll reveals, magnetic actions, tilted memory cards, spotlight and click sparks.
+- `cinematic.js`: staggered text entrance, scroll reveals, magnetic actions, tilted memory cards, spotlight and click sparks.\n- `aero-shards.js` + `aero-shards.css`: a lightweight Three.js adaptation of the Aero Shards visual idea, with floating translucent glass fragments and pointer parallax.
 - `favicon.svg`: custom heart mark for browser tabs.
 
 ## Run locally
