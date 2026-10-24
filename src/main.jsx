@@ -8,28 +8,31 @@ if (root) {
   createRoot(root).render(
     <React.StrictMode>
       <AeroShards
-        shardColor="#d9c2ff"
-        accentColor="#f0b8d8"
+        shardColor="#896ABD"
+        accentColor="#A855F7"
         backgroundColor="transparent"
+        placement="full"
         material="glass"
-        count={950}
-        shardSize={0.82}
-        spread={1.05}
-        twist={1.1}
-        billow={0.85}
-        speed={0.65}
+        markers="plus"
+        count={1300}
+        depthOfField={0.75}
+        vignette={0.3}
+        mouseInteraction
+        pulseOnClick
+        holdToGather
+        lightMode={false}
+        shardSize={1}
+        spread={1}
+        twist={1}
+        billow={1}
+        speed={1}
         scale={1}
-        depthOfField={0.72}
-        glow={0.38}
-        grain={0.035}
-        vignette={0.24}
-        intro={true}
-        mouseInteraction={true}
-        mouseStrength={0.45}
-        markers="dots"
-        pulseOnClick={true}
-        holdToGather={true}
-        parallax={0.42}
+        glow={0.35}
+        grain={0.06}
+        intro
+        mouseStrength={0.6}
+        parallax={0.5}
+        paused={false}
         dpr={1.35}
         className="aero-shards-love"
       />
