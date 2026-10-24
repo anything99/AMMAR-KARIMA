@@ -1,0 +1,17 @@
+{
+  "name": "ammar-karima",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "vgpu": "^0.3.1"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}
