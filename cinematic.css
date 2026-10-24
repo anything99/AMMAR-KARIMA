@@ -35,3 +35,25 @@ h1,h2,h3{font-family:var(--font-display);letter-spacing:-.035em}
 @keyframes trailRise{0%{opacity:0;transform:translate(-50%,-50%) scale(.35)}20%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% - 95px)) scale(1.2) rotate(30deg)}}
 @media(max-width:720px){#love-sculptures{opacity:.62}.sculpture:nth-child(2n){display:none}.intro .name-mark{font-size:clamp(62px,17vw,100px)}.chapter{padding:9vh 7vw}}
 @media(prefers-reduced-motion:reduce){.sculpture,.text-shimmer,.chapter:before{animation:none!important}}
+
+/* React Bits free-component adaptations: Split Text, Scroll Reveal, Magnet,
+   Tilted Card, Spotlight Card and Click Spark. Upstream attribution in README.md. */
+.motion-ready .rb-reveal { opacity:0; transform:translate3d(0,24px,0); filter:blur(5px); transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1),filter .85s cubic-bezier(.16,1,.3,1); transition-delay:var(--reveal-delay,0ms); }
+.motion-ready .rb-reveal.rb-revealed { opacity:1; transform:translate3d(0,0,0); filter:blur(0); }
+.intro h1 .rb-word { display:inline-block; overflow:hidden; vertical-align:bottom; padding-bottom:.08em; }
+.intro h1 .rb-word > span { display:inline-block; transform:translateY(115%) rotate(2deg); opacity:0; }
+.intro h1.rb-ready .rb-word > span { animation:rb-word-rise .95s cubic-bezier(.16,1,.3,1) forwards; animation-delay:calc(var(--word-index,0) * 85ms); }
+@keyframes rb-word-rise { to { transform:translateY(0) rotate(0); opacity:1; } }
+.glass,.mem-card,.begin-btn,.btn { --rb-x:50%; --rb-y:50%; }
+.glass::after,.mem-card::after,.begin-btn::after,.btn::after { content:""; position:absolute; inset:0; pointer-events:none; border-radius:inherit; background:radial-gradient(250px circle at var(--rb-x) var(--rb-y),rgba(255,224,235,.14),rgba(255,113,158,.04) 42%,transparent 72%); opacity:0; transition:opacity .35s ease; }
+.glass.rb-lit::after,.mem-card.rb-lit::after,.begin-btn.rb-lit::after,.btn.rb-lit::after { opacity:1; }
+.begin-btn,.btn { transform:translate3d(var(--rb-mx,0px),var(--rb-my,0px),0); will-change:transform; }
+.mem-card.rb-tilting:not(.flipped) { transform:perspective(900px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)) translateY(-3px); }
+.rb-spark { position:fixed; z-index:1000; width:4px; height:4px; border-radius:50%; pointer-events:none; background:#ffe0eb; box-shadow:0 0 8px #ff8fbd,0 0 18px #ff719e88; animation:rb-spark .68s cubic-bezier(.16,1,.3,1) forwards; }
+@keyframes rb-spark { to { transform:translate(var(--rb-dx),var(--rb-dy)) scale(0); opacity:0; } }
+@media (hover:none),(prefers-reduced-motion:reduce) {
+ .motion-ready .rb-reveal { opacity:1; transform:none; filter:none; }
+ .begin-btn,.btn { transform:none!important; }
+ .glass::after,.mem-card::after,.begin-btn::after,.btn::after { display:none; }
+ .rb-spark { display:none; }
+}
