@@ -13,7 +13,7 @@
 
   // SplitText-style staggered entrance, preserving accessible original text.
   const title = $('#intro-h1');
-  if (title && !reduce && !title.dataset.splitReady) {
+  if (title && !reduce && !title.dataset.splitReady && !title.querySelector('.rb-word')) {
     const words = title.textContent.trim().split(/\s+/);
     title.setAttribute('aria-label', words.join(' '));
     title.innerHTML = words.map((word, i) =>
@@ -25,6 +25,8 @@
     requestAnimationFrame(() => title.classList.add('rb-ready'));
     title.classList.add('text-shimmer');
   }
+
+  if (title) title.classList.add('text-shimmer');
 
   // Scroll Reveal: enter once, gently unblur, then leave the content stable.
   const revealItems = $$('.chapter .eyebrow, .chapter .lede, .chapter .reveal, .story-beat, .memory-grid, .finale .question, .finale-actions');
