@@ -17,7 +17,10 @@ This project adapts interaction patterns from the free [React Bits](https://reac
 Upstream project: https://github.com/DavidHDev/react-bits
 License: https://github.com/DavidHDev/react-bits/blob/main/LICENSE.md
 
-The satin-like WebGL background in `index.html` is a custom recreation inspired by the visual direction of Satin Ridges; it is not copied from the paid Pro source.
+The satin-like WebGL background in `index.html` is an original custom shader built for this project.
+
+## Free-only policy
+All project code and effects are implemented with free browser APIs and free/open-source libraries. No paid React Bits Pro components, subscriptions, API keys, premium assets, or payment-required services are required. Third-party CDN-hosted libraries and Google Fonts are free to use, but do require an internet connection.
 
 ## Accessibility and performance
 The site respects `prefers-reduced-motion`, uses progressive enhancement, and avoids requiring hover interactions to access content. WebGL is configured for low-power rendering with a CSS fallback.
