@@ -396,6 +396,53 @@ footer{
   position: relative; z-index: 5; text-align:center; padding: 60px 20px 80px;
   font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--starlight-dim);
 }
+
+/* ============================================================
+   REACT BITS-INSPIRED LAYER — spotlight, magnetic motion, sparks
+   Adapted for this vanilla HTML/CSS/JS project.
+============================================================ */
+:root{ --rb-pointer-x:50%; --rb-pointer-y:50%; }
+.glass,.mem-card,.begin-btn,.btn,.puzzle-star{
+  --rb-x:50%; --rb-y:50%;
+}
+.glass,.mem-card{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+}
+.glass::after,.mem-card::after{
+  content:"";
+  position:absolute; inset:0; pointer-events:none; z-index:3;
+  border-radius:inherit;
+  background:radial-gradient(280px circle at var(--rb-x) var(--rb-y),
+    rgba(242,215,163,.15), rgba(217,122,134,.055) 38%, transparent 72%);
+  opacity:0; transition:opacity .45s ease;
+}
+.glass.rb-lit::after,.mem-card.rb-lit::after{opacity:1}
+.glass.rb-lit,.mem-card.rb-lit{
+  border-color:rgba(242,215,163,.28);
+  box-shadow:0 12px 50px rgba(0,0,0,.22),0 0 28px rgba(232,184,109,.055);
+}
+.begin-btn,.btn{
+  transform:translate3d(var(--rb-mx,0px),var(--rb-my,0px),0);
+  will-change:transform;
+}
+.rb-spark{
+  position:fixed; z-index:1000; width:5px; height:5px; border-radius:50%;
+  pointer-events:none; background:#f2d7a3;
+  box-shadow:0 0 8px #e8b86d,0 0 18px rgba(232,184,109,.7);
+  animation:rbSpark .65s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes rbSpark{
+  from{transform:translate(0,0) scale(1);opacity:1}
+  to{transform:translate(var(--rb-dx),var(--rb-dy)) scale(0);opacity:0}
+}
+@media (hover:none),(prefers-reduced-motion:reduce){
+  .glass::after,.mem-card::after{display:none}
+  .begin-btn,.btn{transform:none!important}
+  .rb-spark{display:none}
+}
+
 </style>
 </head>
 <body>
@@ -1048,5 +1095,59 @@ footer{
 
 })();
 </script>
+
+<script id="react-bits-inspired-interactions">
+/* Lightweight vanilla-JS interactions inspired by the free React Bits library. */
+(() => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const spotlightTargets = document.querySelectorAll('.glass, .mem-card');
+  spotlightTargets.forEach(el => {
+    el.addEventListener('pointermove', e => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--rb-x', (e.clientX-r.left)+'px');
+      el.style.setProperty('--rb-y', (e.clientY-r.top)+'px');
+      el.classList.add('rb-lit');
+    });
+    el.addEventListener('pointerleave', () => el.classList.remove('rb-lit'));
+  });
+
+  if (finePointer && !reduceMotion) {
+    document.querySelectorAll('.begin-btn, .btn').forEach(el => {
+      el.addEventListener('pointermove', e => {
+        const r = el.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width/2;
+        const y = e.clientY - r.top - r.height/2;
+        el.style.setProperty('--rb-mx', (x*.10)+'px');
+        el.style.setProperty('--rb-my', (y*.12)+'px');
+      });
+      el.addEventListener('pointerleave', () => {
+        el.style.setProperty('--rb-mx','0px');
+        el.style.setProperty('--rb-my','0px');
+      });
+    });
+  }
+
+  if (!reduceMotion) {
+    document.addEventListener('click', e => {
+      const target = e.target.closest('button, a, .puzzle-star, .mem-card');
+      if (!target || !finePointer) return;
+      for (let i=0; i<7; i++) {
+        const spark = document.createElement('i');
+        spark.className = 'rb-spark';
+        spark.style.left = e.clientX+'px';
+        spark.style.top = e.clientY+'px';
+        const angle = (Math.PI*2*i/7) + Math.random()*.35;
+        const distance = 18 + Math.random()*34;
+        spark.style.setProperty('--rb-dx', Math.cos(angle)*distance+'px');
+        spark.style.setProperty('--rb-dy', Math.sin(angle)*distance+'px');
+        document.body.appendChild(spark);
+        spark.addEventListener('animationend', () => spark.remove(), {once:true});
+      }
+    });
+  }
+})();
+</script>
+
 </body>
 </html>
